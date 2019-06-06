@@ -7,8 +7,20 @@ Created on Mon Dec 31 10:45:16 2018
 
 from antworldsimulator import Ant
 from antworldsimulator import AntWorld
+from unittest import TestCase
+
+class AntWorldCreationTest(TestCase):
+    def setUp(self, x_dim, y_dim, num_ants):
+        self.ant_world_1 = AntWorld(x_dim, y_dim, num_ants)
+        
+    def test_ant_properties(self, x_dim, y_dim, num_ants):
+        self.assertEqual(x_dim, self.ant_world_1.ant_world_x_dim)
+        self.assertEqual(y_dim, self.ant_world_1.ant_world_y_dim)
+        self.assertEqual(num_ants, self.ant_world_1.ant_world_population)
+        
 
 if __name__=="__main__":
+    
     print("Hello Ant World")
     ant_world_1 = AntWorld(10, 10, 1)
     for location in ant_world_1.ant_dict:

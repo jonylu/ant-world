@@ -9,6 +9,7 @@ import random
 import time
 import pygame
 
+
 DIRT = 0
 AIR = 1
 ANT = 2
@@ -121,10 +122,10 @@ class AntWorld:
 
 if __name__=="__main__":
     print ("helloworld")
-    block = 30
+    block = 15
     pygame.init()
-    ant_world_x_size = 40
-    ant_world_y_size = 20
+    ant_world_x_size = 80
+    ant_world_y_size = 40
     ant_world_1 = AntWorld(ant_world_x_size, ant_world_y_size, 1)
     size = (ant_world_x_size * block, ant_world_y_size * block)
     screen = pygame.display.set_mode(size)
