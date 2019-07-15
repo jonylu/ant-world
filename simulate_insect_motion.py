@@ -71,6 +71,17 @@ class Ant:
     
     def toggle_selected(self):
         self.is_selected = not self.is_selected
+
+"""
+Running the game involves three different steps that must be done for this game. One is taking in user input. The second is updating the world in time. The third is the draw this world.
+It relies on two different classes. The class that represents the ant world and the class that represents the user input.
+"""     
+def run_game():
+    #start simulator
+    #ant world
+    input_ui(user_interface, ant_world)
+    time_step(user_interface, ant_world)
+    draw_world(user_interface, ant_world)
         
 if __name__=="__main__":
     pygame.init()
