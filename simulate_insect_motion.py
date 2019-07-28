@@ -55,16 +55,19 @@ class Ant:
     
     def advance_simple(self):
         if self.return_x_current_pos() < self.return_x_final_pos():
-            self.current_pos[0] += 1
+            self.current_pos[0] += 3
         if self.return_x_current_pos() > self.return_x_final_pos():
-            self.current_pos[0] -= 1
+            self.current_pos[0] -= 3
         if self.return_y_current_pos() < self.return_y_final_pos():
-            self.current_pos[1] += 1
+            self.current_pos[1] += 3
         if self.return_y_current_pos() > self.return_y_final_pos():
-            self.current_pos[1] -= 1   
+            self.current_pos[1] -= 3   
             
     def set_destination(self, final_pos):
         self.final_pos = final_pos
+    
+    def set_current_pos(self, new_pos):
+        self.current_pos = new_pos
         
     def toggle_color(self):
         self.is_blue = not self.is_blue
