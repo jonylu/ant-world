@@ -11,16 +11,14 @@ DIRT = 0
 AIR = 1
 ANT = 2
 social_security = 0
-
-
 def advance_simulator():
     print ("simulation advanced")
 
 class Ant:
     def __init__(self,  start_pos = np.array([0, 0]), ant_type = 'worker'):
-        self.current_pos = start_pos
+        self.current_grid_pos = start_pos
+        self.current_fine_pos = start_pos
         self.is_blue = True
-        self.current_pos = start_pos
         self.final_pos = start_pos
         self.ant_type = ant_type
         self.is_selected = False
@@ -29,39 +27,39 @@ class Ant:
         social_security = social_security + 1
         
     def __str__(self):
-        return ('(' + str(self.current_pos[0]) + ',' + str(self.current_pos[1]) + ')' + \
+        return ('(' + str(self.current_grid_pos[0]) + ',' + str(self.current_grid_pos[1]) + ')' + \
             ' ' + str(self.ant_social_security))
     
     def return_key(self):
-        return (str(self.current_pos))
+        return (str(self.current_grid_pos))
     
-    def return_x_current_pos(self):
-        return self.current_pos[0]
+    def return_x_current_grid_pos(self):
+        return self.current_grid_pos[0]
     
-    def return_y_current_pos(self):
-        return self.current_pos[1]
+    def return_y_current_grid_pos(self):
+        return self.current_grid_pos[1]
     
-    def return_x_final_pos(self):
-        return self.final_pos[0]
+    def return_x_final_grid_pos(self):
+        return self.final_grid_pos[0]
     
-    def return_y_final_pos(self):
-        return self.final_pos[1]
+    def return_y_final_grid_pos(self):
+        return self.final_grid_pos[1]
 
     def increment_x_current_pos(self, incr):
-        self.current_pos[0] += incr
+        self.current_fine_pos[0] += incr
         
     def increment_y_current_pos(self, incr):
-        self.current_pos[1] += incr
+        self.current_fine_pos[1] += incr
     
     def advance_simple(self):
-        if self.return_x_current_pos() < self.return_x_final_pos():
-            self.current_pos[0] += 3
-        if self.return_x_current_pos() > self.return_x_final_pos():
-            self.current_pos[0] -= 3
-        if self.return_y_current_pos() < self.return_y_final_pos():
-            self.current_pos[1] += 3
-        if self.return_y_current_pos() > self.return_y_final_pos():
-            self.current_pos[1] -= 3   
+        if self.return_x_current_fine_pos() < self.return_x_final_grid_pos():
+            self.current_fine_pos[0] += 1
+        if self.return_x_current_fine_pos() > self.return_x_final_grid_pos():
+            self.current_fine_pos[0] -= 1
+        if self.return_y_current_fine_pos() < self.return_y_final_grid_pos():
+            self.current_fine_pos[1] += 1
+        if self.return_y_current_fine_pos() > self.return_y_final_grid_pos():
+            self.current_fine_pos[1] -= 1   
             
     def set_destination(self, final_pos):
         self.final_pos = final_pos

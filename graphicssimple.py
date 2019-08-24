@@ -13,8 +13,8 @@ import numpy as np
 
 # --- constants --- (UPPER_CASE names)
 
-SCREEN_WIDTH = 430
-SCREEN_HEIGHT = 410
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 1000
 
 #BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -22,16 +22,27 @@ RED   = (255,   0,   0)
 
 FPS = 30
 
-CELL_SIZE= 40
+CELL_SIZE= 20
 
-ANT_GRAPHIC_SIZE = 17
+ANT_GRAPHIC_SIZE = 20
+
+def cgrid_to_pixel(pos):
+    return pos * CELL_SIZE 
+def pixel_to_cgrid(pixel):
+    return np.round(pixel / CELL_SIZE)
+def cgrid_to_pixel(pos):
+    return np.round(pos * CELL_SIZE)
+def fgrid_to_pixel(pos):
+    return np.round(pos * CELL_SIZE)
+def pixel_to_fgrid(pixel):
+    return pixel / CELL_SIZE
 
 class AntGraphic:
     def __init__(self,  ant):
         self.ant = ant
         self.selected = False #whether the ant is selected
         self.color = "Blue" 
-        self.graphic = pygame.rect.Rect((self.ant).return_x_current_pos()-np.floor(ANT_GRAPHIC_SIZE/2), (self.ant).return_y_current_pos()-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
+        self.graphic = pygame.rect.Rect(grid_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), grid_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
     def deselect(self):
         self.selected = False
     def select(self):
@@ -82,11 +93,13 @@ class SelectionBox:
         return (self.rectangle)
 
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+modes = pygame.display.list_modes(16)
+screen = pygame.display.set_mode((1920,1080),pygame.FULLSCREEN)
+#screen = pygame.display.set_mode()
 pygame.display.set_caption("Tracking System")
 
 # - objects -
-ant1 = Ant(np.array([50,50]),'worker')
+ant1 = Ant(np.array([100,100]),'worker')
 ant_graphic_1 = AntGraphic(ant1)
 select_box = SelectionBox(0, 0, 0, 0)
 ui = UserInterface(1)
@@ -110,6 +123,7 @@ while running:
             if ui.is_right_click(event):
                 if ant_graphic_1.is_selected():
                     downclick_x, downclick_y = event.pos
+                    print(event.pos)
                     ant1.set_destination(np.array([downclick_x, downclick_y]))
         elif event.type == pygame.MOUSEBUTTONUP:
             if ui.is_left_click(event):
