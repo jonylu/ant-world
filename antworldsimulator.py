@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct  5 18:54:04 2018
+The very first iteration of Ant and antworld in a grid. Not currently being used but if you like, you can run it with antworldsimulator_test.py to see what it does.
 
 @author: jonyl
 """
@@ -131,8 +131,12 @@ if __name__=="__main__":
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Ant Simulator")
     WHITE = (0xFF, 0xFF, 0xFF)
+    BLUE = (0, 0, 255)
     BLACK = (0, 0, 0)
     GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
+    TAN =( 155, 155, 30)
+    YELLOW = (100,230, 0)
     screen.fill(WHITE)
     pygame.display.flip()
     ant_world_1.add_ant_birth(np.array([1, 1]))
@@ -151,11 +155,11 @@ if __name__=="__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_exit = True
-        screen.fill(WHITE)
-        pygame.draw.rect(screen, GREEN, [block, block, (ant_world_x_size - 2) * block, (ant_world_y_size -2) * block])
+        screen.fill(YELLOW)
+        pygame.draw.rect(screen, TAN, [block, block, (ant_world_x_size - 2) * block, (ant_world_y_size -2) * block])
         for location in ant_world_1.ant_dict:
             for ant in ant_world_1.ant_dict[location]:
-                pygame.draw.rect(screen, BLACK, [block * ant.return_x_loc(), block * ant.return_y_loc(), block, block])
+                pygame.draw.rect(screen, BLUE, [block * ant.return_x_loc(), block * ant.return_y_loc(), block, block])
         pygame.display.update()
         time.sleep(1)
         ant_world_1.move_all_ants_random()

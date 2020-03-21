@@ -4,8 +4,9 @@ Created on Sat Jul 13 18:42:07 2019
 
 @author: Jonathan Lu
 
+Don't update or change code on this one. This is a reference code to show what can be done in terms of user experience.
 Drag to create selection box to select an ant. Once ant is selected, left-click on a location to transport ant instantaneously. Works with one button mouse.
-Will try to have a fine grid as well as a course grid. The fine grid allows small resolution movement while course grid determines where the ant will land.
+Will try to have a fine grid as well as a course grid. The fine grid allows small resolution movement while course grid determines where the ant will land. 
 
 """
 import pygame
@@ -43,7 +44,7 @@ class AntGraphic:
         self.ant = ant
         self.selected = False #whether the ant is selected
         self.color = "Blue" 
-        self.graphic = pygame.rect.Rect(grid_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), grid_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
+        self.graphic = pygame.rect.Rect((self.ant).return_x_current_pos()-np.floor(ANT_GRAPHIC_SIZE/2), (self.ant).return_y_current_pos()-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
     def deselect(self):
         self.selected = False
     def select(self):

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jan 18 21:34:19 2019
 
+Obsolete file that demonstrates insection motion. Can look at it but don't code in it. Ant grid position and graphics location are fused together. We attempted to split these
+two concepts apart in the program. IN this code, you can move the ants with arrow keys.
 @author: jonyl
 """
 import numpy as np
@@ -19,7 +20,7 @@ class Ant:
         self.current_grid_pos = start_pos
         self.current_fine_pos = start_pos
         self.is_blue = True
-        self.final_pos = start_pos
+        self.final_grid_pos = start_pos
         self.ant_type = ant_type
         self.is_selected = False
         global social_security
@@ -52,14 +53,14 @@ class Ant:
         self.current_fine_pos[1] += incr
     
     def advance_simple(self):
-        if self.return_x_current_fine_pos() < self.return_x_final_grid_pos():
-            self.current_fine_pos[0] += 1
-        if self.return_x_current_fine_pos() > self.return_x_final_grid_pos():
-            self.current_fine_pos[0] -= 1
-        if self.return_y_current_fine_pos() < self.return_y_final_grid_pos():
-            self.current_fine_pos[1] += 1
-        if self.return_y_current_fine_pos() > self.return_y_final_grid_pos():
-            self.current_fine_pos[1] -= 1   
+        if self.return_x_current_grid_pos() < self.return_x_final_grid_pos():
+            self.current_grid_pos[0] += 1
+        if self.return_x_current_grid_pos() > self.return_x_final_grid_pos():
+            self.current_grid_pos[0] -= 1
+        if self.return_y_current_grid_pos() < self.return_y_final_grid_pos():
+            self.current_grid_pos[1] += 1
+        if self.return_y_current_grid_pos() > self.return_y_final_grid_pos():
+            self.current_grid_pos[1] -= 1   
             
     def set_destination(self, final_pos):
         self.final_pos = final_pos
@@ -77,12 +78,6 @@ class Ant:
 Running the game involves three different steps that must be done for this game. One is taking in user input. The second is updating the world in time. The third is the draw this world.
 It relies on two different classes. The class that represents the ant world and the class that represents the user input.
 """     
-def run_game():
-    #start simulator
-    #ant world
-    input_ui(user_interface, ant_world)
-    time_step(user_interface, ant_world)
-    draw_world(user_interface, ant_world)
         
 if __name__=="__main__":
     pygame.init()
@@ -114,8 +109,8 @@ if __name__=="__main__":
         
         screen.fill((255, 255, 255))
         if ant_1.is_blue: color = (0, 0, 0)
-        else: color = (255, 100, 0)
+        else: color = (0, 0, 255)
         ant_grid_size = 10 #must be even
-        pygame.draw.rect(screen, color, pygame.Rect(ant_1.return_x_current_pos()-ant_grid_size/2, ant_1.return_y_current_pos()-ant_grid_size/2, ant_grid_size, ant_grid_size))      
+        pygame.draw.rect(screen, color, pygame.Rect(ant_1.return_x_current_grid_pos()-ant_grid_size/2, ant_1.return_y_current_grid_pos()-ant_grid_size/2, ant_grid_size, ant_grid_size))      
         pygame.display.flip()
         clock.tick(60)

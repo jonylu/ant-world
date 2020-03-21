@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jan 18 21:34:19 2019
+#File that includes the Ant class as well as other creatures that we might include into our world.
+
 
 @author: jonyl
 """
