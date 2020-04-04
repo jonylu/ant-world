@@ -25,7 +25,7 @@ def edge_distance_manhatten(coor1, coor2, grid):
         if(grid_type(coor1, grid)==AIR and grid_type(coor2, grid)==AIR):
             return 1
         if(grid_type(coor1, grid)==DIRT or grid_type(coor2, grid)==DIRT):
-            return 5
+            return 12
     else:
         return math.inf
     
@@ -56,8 +56,9 @@ def y_coor(coor):
 def edge_matrix(grid):
     edge_mat = np.zeros([x_size(grid)*y_size(grid),x_size(grid)*y_size(grid)])
     for pt1_index in range(np.shape(edge_mat)[0]):
-        for pt2_index in range(np.shape(edge_mat)[1]):
+        for pt2_index in range(pt1_index, np.shape(edge_mat)[1]):
             edge_mat[pt1_index][pt2_index]=edge_distance_manhatten(index_to_coor(pt1_index, grid), index_to_coor(pt2_index, grid), grid)
+            edge_mat[pt2_index][pt1_index]=edge_mat[pt1_index][pt2_index] #redundant when pt1_index == pt2_index
     return edge_mat
 
 def initialize_distance_mat(start_coor, edge_mat):
@@ -92,39 +93,34 @@ def dijkstra(grid, start_coor, end_coor):
                 new_node = test_index
         current_index = new_node
         visited.append(current_index)
-        print(visited)
     backtrack_node = end_index
-    print(previous)
-    print(coor_to_index(start_coor, grid))
-    print(coor_to_index(end_coor, grid))
     path_array= []
-
-
     while(backtrack_node != -1):
         path_array.append(backtrack_node)
-        # print(type(backtrack_node))
         backtrack_node = previous[backtrack_node]
     path_array = path_array[::-1]
-
     return [index_to_coor(index, grid) for index in path_array] 
 
  
 if __name__=="__main__": 
-    """
-    grid = np.zeros([4,6])
-    print(grid)
-    grid[2:4,1:3]=DIRT
-    grid[2,4]=DIRT
-    print(grid)
-    """
-    grid = np.zeros([3,4])
-    
-    grid[1,1] = DIRT
+    grid = np.zeros([20,30])
+    grid[10:20, 10:20]=DIRT
+    grid[40:45,10:20] = DIRT
     grid[0,2] = DIRT
     coor_nodes = nodes(grid)
-    print(grid)
     
     source =np.array([0,0])
-    dest = np.array([1,3])
-    print(dijkstra(grid, source, dest))
+    dest = np.array([18,25])
+    path = dijkstra(grid, source, dest)
+    new_grid = grid
+    for coor in path:
+        new_grid[coor[0]][coor[1]]=6
+    print(new_grid)
     
+    grid = np.zeros([5,5])
+    grid[0:4,2:3]=DIRT
+    start=[0,0]
+    last = [0,4]
+    path = dijkstra(grid, start, last)
+    print(grid)
+    print(path)

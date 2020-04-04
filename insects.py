@@ -56,14 +56,15 @@ class Ant:
         self.current_pos[1] += incr
     
     def advance_simple(self):
+        increment = 5
         if self.return_x_current_pos() < self.return_x_final_pos():
-            self.current_pos[0] += 3
+            self.current_pos[0] += increment
         if self.return_x_current_pos() > self.return_x_final_pos():
-            self.current_pos[0] -= 3
+            self.current_pos[0] -= increment
         if self.return_y_current_pos() < self.return_y_final_pos():
-            self.current_pos[1] += 3
+            self.current_pos[1] += increment
         if self.return_y_current_pos() > self.return_y_final_pos():
-            self.current_pos[1] -= 3   
+            self.current_pos[1] -= increment
             
     def set_destination(self, final_pos):
         self.final_pos = final_pos

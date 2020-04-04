@@ -96,8 +96,8 @@ class SelectionBox:
 
 pygame.init()
 modes = pygame.display.list_modes(16)
-screen = pygame.display.set_mode((1920,1080),pygame.FULLSCREEN)
-#screen = pygame.display.set_mode()
+#screen = pygame.display.set_mode((1920,1080),pygame.FULLSCREEN)
+screen = pygame.display.set_mode()
 pygame.display.set_caption("Tracking System")
 
 # - objects -
