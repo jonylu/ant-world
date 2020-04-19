@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-The very first iteration of Ant and antworld in a grid. Not currently being used but if you like, you can run it with antworldsimulator_test.py to see what it does.
+The very first iteration of Ant and antworld in a grid. Not currently being used but if you like, you can run it with antworldsimulator_test.py to see what it does. If you run this program, you get a bunch of ants moving around and the graphics where they are all squares
 
 @author: jonyl
 """
