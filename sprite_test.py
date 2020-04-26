@@ -31,8 +31,8 @@ class AntSprite(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
         #creating a rect at position x,y (5,5) of size (150,198) which is the size of sprite 
-        self.rect = pygame.Rect(pixel_pos_x, pixel_pos_y, pixel_size_x, pixel_size_y)
-        self.selected = True
+        self.rect = pygame.rect.Rect(pixel_pos_x, pixel_pos_y, pixel_size_x, pixel_size_y)
+        self.selected = False
 
     def update(self):
         self.index += 1       
@@ -46,7 +46,6 @@ class AntSprite(pygame.sprite.Sprite):
             self.index -= NUM_MOVE_SPRITE_STATES
         if (self.selected and self.index < NUM_MOVE_SPRITE_STATES):
             self.index += NUM_MOVE_SPRITE_STATES
-        print (self.index)
         self.image = self.images[self.index]
  
         
@@ -60,10 +59,10 @@ if __name__ == '__main__':
 
     #creating our sprite object
     my_sprite = AntSprite(100,100,50,50)
-
+    rect1= pygame.rect.Rect(50, 50, 100, 100)
     #creating a group with our sprite
     my_group = pygame.sprite.Group(my_sprite)
-
+    print (rect1.colliderect(my_sprite))
     #getting the pygame clock for handling fps
     clock = pygame.time.Clock()
 
@@ -78,18 +77,19 @@ if __name__ == '__main__':
                 quit()
     
         #updating the sprite
-        my_group.update()
+        #my_group.update()
+        my_sprite.update()
 
         #filling the screen with background color
         screen.fill(WHITE)
 
         #drawing the sprite
         my_group.draw(screen)
+        #my_sprite.draw(screen)
 
         #updating the display
-        pygame.display.update()
-        #pygame.display.flip()
+        #pygame.display.update()
+        pygame.display.flip()
 
         #finally delaying the loop to with clock tick for 10fps 
         clock.tick(5)
-        print(clock.get_time())

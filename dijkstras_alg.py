@@ -87,7 +87,8 @@ class PathFind:
         current_index = start_index
         end_index = self.coor_to_index(self.end)
         visited.append(current_index)
-        while(not(end_index in visited)):
+        while (len(visited) != self.x_size()*self.y_size()):
+        #while(not(end_index in visited)):
             minimum_dist = math.inf
             new_node = 0 #set arbitrarily
             for test_index in range(len(edge_mat)):
@@ -107,7 +108,6 @@ class PathFind:
             backtrack_node = previous[backtrack_node]
         #path_array = path_array[::-1] reverses the array
         return [self.index_to_coor(index) for index in path_array] 
-
  
 if __name__=="__main__": 
 #    grid = np.zeros([26,30])

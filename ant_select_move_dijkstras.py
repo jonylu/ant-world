@@ -32,6 +32,9 @@ CELL_SIZE= 50
 
 ANT_GRAPHIC_SIZE = 50
 
+NUM_MOVE_SPRITE_STATES= 4
+
+
 SCREEN_WIDTH = CELL_SIZE * np.shape(grid)[1]
 SCREEN_HEIGHT = CELL_SIZE * np.shape(grid)[0]
 
@@ -50,6 +53,7 @@ class AntGraphic:
         self.selected = False #whether the ant is selected
         self.color = "Blue" 
         self.graphic = pygame.rect.Rect(coor_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), coor_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
+        self.sprite =  AntSprite(coor_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), coor_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
         
     def deselect(self):
         self.selected = False
@@ -63,34 +67,54 @@ class AntGraphic:
         return self.graphic
 
 class AntSprite(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, ant):
         super(AntSprite, self).__init__()
+        #pygame.sprite.Sprite.__init__(self)
         #adding all the images to sprite array
         self.images = []
-        self.images.append(pygame.image.load('ant_20_pix.png'))
-        self.images.append(pygame.image.load('ant_20_pix-2.png'))
-
+        self.images.append(pygame.image.load('ant_50_pix_1_n.png'))
+        self.images.append(pygame.image.load('ant_50_pix_2_n.png'))
+        self.images.append(pygame.image.load('ant_50_pix_3_n.png'))
+        self.images.append(pygame.image.load('ant_50_pix_4_n.png'))
+        self.images.append(pygame.image.load('ant_50_pix_1_s_w.png'))
+        self.images.append(pygame.image.load('ant_50_pix_2_s_w.png'))
+        self.images.append(pygame.image.load('ant_50_pix_3_s_w.png'))
+        self.images.append(pygame.image.load('ant_50_pix_4_s_w.png'))
         #index value to get the image from the array
         #initially it is 0 
         self.index = 0
+        self.ant = ant
 
         #now the image that we will display will be the index from the image array 
         self.image = self.images[self.index]
 
         #creating a rect at position x,y (5,5) of size (150,198) which is the size of sprite 
-        self.rect = pygame.Rect(5, 5, 20, 20)
+        self.rect = pygame.rect.Rect(coor_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), coor_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
+        self.selected = False
+        
+    def deselect(self):
+        self.selected = False
+    def select(self):
+        self.selected = True
+    def is_selected(self):
+        return self.selected
+
 
     def update(self):
-        #when the update method is called, we will increment the index
-        self.index += 1
+        self.index += 1       
+        if ((self.index % NUM_MOVE_SPRITE_STATES) == 0):
+            if (self.index == NUM_MOVE_SPRITE_STATES):
+                self.index = 0
+            if (self.index == 2*NUM_MOVE_SPRITE_STATES):
+                self.index = NUM_MOVE_SPRITE_STATES    
 
-        #if the index is larger than the total images
-        if self.index >= len(self.images):
-            #we will make the index to 0 again
-            self.index = 0
-        
-        #finally we will update the image that will be displayed
+        if ((not self.selected) and self.index >= NUM_MOVE_SPRITE_STATES):
+            self.index -= NUM_MOVE_SPRITE_STATES
+        if (self.selected and self.index < NUM_MOVE_SPRITE_STATES):
+            self.index += NUM_MOVE_SPRITE_STATES
+        print (self.index)
         self.image = self.images[self.index]
+        self.rect = pygame.rect.Rect(coor_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), coor_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
 
 class UserInterface:
     def __init__(self, id):
@@ -138,8 +162,15 @@ pygame.display.set_caption("Tracking System")
 
 # - objects -
 ant1 = Ant(np.array([2,2], dtype=float),'worker')
-ant_graphic_1 = AntGraphic(ant1)
+ant_sprite_1 = AntSprite(ant1)
 select_box = SelectionBox(0, 0, 0, 0)
+
+
+#creating a group with our sprite
+all_sprites = pygame.sprite.Group(ant_sprite_1)
+
+
+
 ui = UserInterface(1)
 # - mainloop -
 
@@ -152,14 +183,14 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if ui.is_left_click(event):            
-                if ant_graphic_1.is_selected():
+                if ant_sprite_1.is_selected():
                     downclick_x, downclick_y = event.pos
                 if (not select_box.is_visible()): #creates a selection box, when nothing was selected
                     start_pos_mouse_x, start_pos_mouse_y = event.pos
                     select_box.set_origin(start_pos_mouse_x, start_pos_mouse_y)
                     select_box.set_visible()
             if ui.is_right_click(event):
-                if ant_graphic_1.is_selected():
+                if ant_sprite_1.is_selected():
                     downclick_x, downclick_y = event.pos
                     dest_x_coor, dest_y_coor = pixel_to_coor(np.array([downclick_x, downclick_y]))
                     print('destination coor')
@@ -169,13 +200,13 @@ while running:
         elif event.type == pygame.MOUSEBUTTONUP:
             if ui.is_left_click(event):
                 if select_box.is_visible(): #makes sure selection box exists to detect collision
-                    if select_box.return_rectangle().colliderect(ant_graphic_1.return_graphic()):
-                        ant_graphic_1.select()
+                    if select_box.return_rectangle().colliderect(ant_sprite_1):
+                        ant_sprite_1.select()
                     else:
-                        ant_graphic_1.deselect()
+                        ant_sprite_1.deselect()
                     select_box.reset_box()
                 else: #click outside the ant1, ant1 not selected anymore
-                    ant_graphic_1.select()
+                    ant_sprite_1.select()
         elif event.type == pygame.MOUSEMOTION: #if the select box has been created from the mouse click, the motion will change the selection box size.
             if select_box.is_visible():
                 current_pos_mouse_x, current_pos_mouse_y = event.pos
@@ -184,9 +215,13 @@ while running:
     # - updates (without draws) -
 
     # empty
-    ant1.advance_simple()
     
-    ant_graphic_1.update_ant_graphic()
+
+    
+    ant1.advance_simple()
+    ant1.print_commands()
+    
+    ant_sprite_1.update()
 
     # - draws (without updates) -
 
@@ -198,10 +233,8 @@ while running:
     
     if (select_box.is_visible()):
         pygame.draw.rect(screen, RED, select_box.return_rectangle(), 1)
-    if (ant_graphic_1.is_selected()):
-        pygame.draw.rect(screen, (0, 0, 255), ant_graphic_1.return_graphic())
-    else:
-        pygame.draw.rect(screen, (125, 125, 125), ant_graphic_1.return_graphic())
+   
+    all_sprites.draw(screen)
     pygame.display.flip()
     # - constant game speed / FPS -
 
