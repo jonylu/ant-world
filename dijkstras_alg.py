@@ -80,8 +80,7 @@ class PathFind:
         edge_mat = self.edge_matrix()
         dist_mat = self.initialize_distance_mat(self.start, edge_mat)
         visited = []
-        previous = np.zeros(np.shape(dist_mat), dtype=int)
-        previous[:]=-1
+        previous = self.intialize_previous_vector()
         #previous[coor_to_index(start_coor, grid)] = 0
         start_index = self.coor_to_index(self.start)
         current_index = start_index
@@ -108,7 +107,21 @@ class PathFind:
             backtrack_node = previous[backtrack_node]
         #path_array = path_array[::-1] reverses the array
         return [self.index_to_coor(index) for index in path_array] 
+    #initialize vector indicating the previous matrix of a path
+    def intialize_previous_vector(self):
+        previous = np.zeros(self.x_size()*self.y_size(), dtype=int)
+        previous[:] = -1
+        return previous
+    
+    """
+    def uniform_cost_search(self):
+        start_index = self.coor_to_index(self.start)
+        previous = np.zeros(self.x_size()*self.y_size(), dtype=int) #traces the previous path
+        front = 
+        visited = []
+        if frontier
  
+    """
 if __name__=="__main__": 
 #    grid = np.zeros([26,30])
 #    grid[10:20, 10:20]=DIRT
