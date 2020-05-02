@@ -19,7 +19,7 @@ ANT = 2
 
 
 #grid = np.zeros([50, 50])
-grid = np.zeros([20,20])
+grid = np.zeros([40,50])
 
 grid[3:15,3:15] = DIRT
 #BLACK = (  0,   0,   0)

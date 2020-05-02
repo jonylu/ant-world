@@ -8,7 +8,7 @@ Created on Fri Jan 18 21:34:19 2019
 """
 import numpy as np
 import pygame
-from dijkstras_alg import PathFind as pf
+from dijkstrasalg import PathFind as pf
 
 DIRT = 0
 AIR = 1
@@ -133,7 +133,8 @@ class Ant:
             
     def set_destination(self, grid, final_pos):
         p= pf(self.current_pos.astype(int), final_pos, grid)
-        path = p.dijkstra()
+        #path = p.uniform_cost_search()
+        path = p.a_star_search()
         self.clear_states()
         self.add_path_to_states(path)
         self.final_pos = final_pos
