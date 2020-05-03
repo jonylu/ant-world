@@ -62,6 +62,9 @@ class PriorityQueueList():
     def print_pq(self):
         for index in range(self.size):
             print(self.list[index])
+    
+    def return_list_nodes(self):
+        return self.list
         
 #if __name__ == "__main__":
 #    x = PriorityQueueList()

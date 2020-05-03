@@ -14,7 +14,7 @@ class PathNode():
     def return_path_cost(self):
         return self.node[0]
     
-    def return_node_name(self, display_x_y_coor = False, y_size=7):
+    def return_node_name(self, display_x_y_coor = False, y_size=8):
         if (not display_x_y_coor):
             return self.node[1]
         else:
@@ -41,4 +41,4 @@ class PathNode():
         return self.return_path_cost() == other_node.return_path_cost()
     
     def __str__(self):
-        return ('(PCost:' + str(self.return_path_cost()) + ', NodeName:' + str(self.return_node_name(True, 7)) + ')')
+        return ('(PCost:' + str(self.return_path_cost()) + ', NodeName:' + str(self.return_node_name(True, 4)) + ')') #change the y_size manually for debuggin, yes I know this is not great.

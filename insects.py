@@ -88,12 +88,6 @@ class Ant:
     
     def return_y_current_pos(self):
         return self.current_pos[1]
-    
-    #def return_x_final_pos(self):
-    #    return self.final_pos[0]
-    
-    #def return_y_final_pos(self):
-    #    return self.final_pos[1]
 
     def increment_x_current_pos(self, incr):
         self.current_pos[0] += incr
@@ -103,12 +97,7 @@ class Ant:
     #only move one direction per advance simple
     def advance_simple(self):
         increment = 0.5
-        print(self.current_pos)
         if (self.return_current_state() == MOVE):
-            print(self.return_x_current_pos())
-            print(self.return_x_next_dest())
-            print(self.return_y_current_pos())
-            print(self.return_y_next_dest())
             if self.return_x_current_pos() < self.return_x_next_dest():
                 self.current_pos[0] += increment
                 return
@@ -117,14 +106,12 @@ class Ant:
                 return
             if self.return_y_current_pos() < self.return_y_next_dest():
                 self.current_pos[1] += increment
-                print(self.return_current_state())
                 return
             if self.return_y_current_pos() > self.return_y_next_dest():
                 self.current_pos[1] -= increment
                 return
             if (np.array_equal(self.current_pos, self.return_next_dest())):
                 self.pop_next_state()      
-        print(self.current_pos)
         return
     
     def add_path_to_states(self, path):
@@ -133,8 +120,8 @@ class Ant:
             
     def set_destination(self, grid, final_pos):
         p= pf(self.current_pos.astype(int), final_pos, grid)
-        #path = p.uniform_cost_search()
-        path = p.a_star_search()
+        path = p.uniform_cost_search()
+        #path = p.a_star_search()
         self.clear_states()
         self.add_path_to_states(path)
         self.final_pos = final_pos

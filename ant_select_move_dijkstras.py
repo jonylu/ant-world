@@ -19,7 +19,7 @@ ANT = 2
 
 
 #grid = np.zeros([50, 50])
-grid = np.zeros([40,50])
+grid = np.zeros([30,30])
 
 grid[3:15,3:15] = DIRT
 #BLACK = (  0,   0,   0)
@@ -112,7 +112,6 @@ class AntSprite(pygame.sprite.Sprite):
             self.index -= NUM_MOVE_SPRITE_STATES
         if (self.selected and self.index < NUM_MOVE_SPRITE_STATES):
             self.index += NUM_MOVE_SPRITE_STATES
-        print (self.index)
         self.image = self.images[self.index]
         self.rect = pygame.rect.Rect(coor_to_pixel((self.ant).return_x_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), coor_to_pixel((self.ant).return_y_current_pos())-np.floor(ANT_GRAPHIC_SIZE/2), ANT_GRAPHIC_SIZE, ANT_GRAPHIC_SIZE)
 
@@ -193,9 +192,6 @@ while running:
                 if ant_sprite_1.is_selected():
                     downclick_x, downclick_y = event.pos
                     dest_x_coor, dest_y_coor = pixel_to_coor(np.array([downclick_x, downclick_y]))
-                    print('destination coor')
-                    ##################WORKING HERE START HERE 04/14/2020
-                    print([dest_x_coor, dest_y_coor])
                     ant1.set_destination(grid, np.array([dest_x_coor, dest_y_coor]))
         elif event.type == pygame.MOUSEBUTTONUP:
             if ui.is_left_click(event):
@@ -219,7 +215,6 @@ while running:
 
     
     ant1.advance_simple()
-    ant1.print_commands()
     
     ant_sprite_1.update()
 
