@@ -166,14 +166,14 @@ class VisualizePathFind:
             if (current_node.return_node_name() == end_index): #hit state, found your final state, break loop
                 break 
             if (not visited.is_present(current_node)): #add node state to explored if not there already
-                visited.insert(current_node.return_path_cost(), current_node.return_node_name())
+                visited.insert(current_node.return_node_priority(), current_node.return_node_name())
                 #visited.print_pq()
             for child_node in self.create_child_nodes(current_node, edge_mat):
                 if (not (visited.is_present(child_node)) and not (frontier.is_present(child_node))):
-                    frontier.insert(child_node.return_path_cost(), child_node.return_node_name())
+                    frontier.insert(child_node.return_node_priority(), child_node.return_node_name())
                     previous[child_node.return_node_name()] = current_node.return_node_name()
                 elif (frontier.is_present(child_node)):
-                    if (child_node.return_path_cost() < frontier.find_node(child_node).return_path_cost()):
+                    if (child_node.return_node_priority() < frontier.find_node(child_node).return_node_priority()):
                         frontier.replace_node(child_node)#remove the old path and put in the new child_node into frontier with a more optimal path cost
                         previous[child_node.return_node_name()] = current_node.return_node_name()
             counter = counter + 1
@@ -184,7 +184,7 @@ class VisualizePathFind:
             plot_index_node(screen, vpf, start_index, color = BLACK)
             plot_index_node(screen, vpf, end_index, color = BLACK)
             pygame.display.flip()
-            clock.tick(1)
+            clock.tick(5)
             #print("frontier")
             #frontier.print_pq()
         #after while loop either you have a current_index
@@ -228,14 +228,14 @@ class VisualizePathFind:
             if (current_node.return_node_name() == end_index): #hit state, found your final state, break loop
                 break 
             if (not visited.is_present(current_node)): #add node state to explored if not there already
-                visited.insert(current_node.return_path_cost(), current_node.return_node_name())
+                visited.insert(current_node.return_node_priority(), current_node.return_node_name())
             path_cost_array, potential_child_nodes = self.create_child_nodes_with_heuristic(current_node, edge_mat, end_index, heuristic, path_cost_array)
             for child_node in potential_child_nodes:
                 if (not (visited.is_present(child_node)) and not (frontier.is_present(child_node))):
-                    frontier.insert(child_node.return_path_cost(), child_node.return_node_name())
+                    frontier.insert(child_node.return_node_priority(), child_node.return_node_name())
                     previous[child_node.return_node_name()] = current_node.return_node_name()
                 elif (frontier.is_present(child_node)):
-                    if (child_node.return_path_cost() < frontier.find_node(child_node).return_path_cost()):
+                    if (child_node.return_node_priority() < frontier.find_node(child_node).return_node_priority()):
                         frontier.replace_node(child_node)#remove the old path and put in the new child_node into frontier with a more optimal path cost
                         previous[child_node.return_node_name()] = current_node.return_node_name()
             counter = counter + 1
@@ -246,7 +246,7 @@ class VisualizePathFind:
             plot_index_node(screen, vpf, start_index, color = BLACK)
             plot_index_node(screen, vpf, end_index, color = BLACK)
             pygame.display.flip()
-            clock.tick(1)
+            clock.tick(5)
         #after while loop either you have a current_index
         backtrack_node = end_index
         path_array= []
@@ -261,7 +261,7 @@ class VisualizePathFind:
 
     #create child nodes assuming that 
     def create_child_nodes(self, current_node, edge_mat): 
-        curr_path_cost = current_node.return_path_cost()
+        curr_path_cost = current_node.return_node_priority()
         node_name = current_node.return_node_name()
         node_coor = self.index_to_coor(node_name)
         child_nodes = []
@@ -484,8 +484,8 @@ if __name__ == '__main__':
                 if (grid[y_grid,x_grid]==DIRT):
                     pygame.draw.rect(screen, BROWN, pygame.rect.Rect(coor_to_pixel(x_grid)-np.floor(CELL_SIZE/2), coor_to_pixel(y_grid)-np.floor(CELL_SIZE/2), CELL_SIZE, CELL_SIZE))
         vpf = VisualizePathFind(source, dest, grid)
-        #vpf.uniform_cost_search()
-        vpf.a_star_search()                 
+        vpf.uniform_cost_search()
+        #vpf.a_star_search()                 
         time.sleep(20)
         #finally delaying the loop to with clock tick for 10fps 
         clock.tick(5)

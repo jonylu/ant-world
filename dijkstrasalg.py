@@ -112,7 +112,7 @@ class PathFind:
         previous[:] = -1
         return previous
     
-    def uniform_cost_search(self):
+    def uniform_cost_search(self, debugmode = False):
         start_index = self.coor_to_index(self.start)
         current_index = start_index
         edge_mat = self.edge_matrix()
@@ -124,11 +124,12 @@ class PathFind:
         frontier.insert(0, current_index)
         counter=0
         while True:
-            print(counter)
-            print("frontier")
-            frontier.print_pq()
-            print("visited")
-            visited.print_pq()
+            if debugmode:
+                print(counter)
+                print("frontier")
+                frontier.print_pq()
+                print("visited")
+                visited.print_pq()
             if (not frontier):
                 print("failure")
                 return
@@ -136,14 +137,14 @@ class PathFind:
             if (current_node.return_node_name() == end_index): #hit state, found your final state, break loop
                 break 
             if (not visited.is_present(current_node)): #add node state to explored if not there already
-                visited.insert(current_node.return_path_cost(), current_node.return_node_name())
+                visited.insert(current_node.return_node_priority(), current_node.return_node_name())
                 #visited.print_pq()
             for child_node in self.create_child_nodes(current_node, edge_mat):
                 if (not (visited.is_present(child_node)) and not (frontier.is_present(child_node))):
-                    frontier.insert(child_node.return_path_cost(), child_node.return_node_name())
+                    frontier.insert(child_node.return_node_priority(), child_node.return_node_name())
                     previous[child_node.return_node_name()] = current_node.return_node_name()
                 elif (frontier.is_present(child_node)):
-                    if (child_node.return_path_cost() < frontier.find_node(child_node).return_path_cost()):
+                    if (child_node.return_node_priority() < frontier.find_node(child_node).return_node_priority()):
                         frontier.replace_node(child_node)#remove the old path and put in the new child_node into frontier with a more optimal path cost
                         previous[child_node.return_node_name()] = current_node.return_node_name()
             counter = counter + 1
@@ -158,7 +159,7 @@ class PathFind:
         #path_array = path_array[::-1] reverses the array
         return [self.index_to_coor(index) for index in path_array] 
     
-    def a_star_search(self):
+    def a_star_search(self, debugmode = False):
         start_index = self.coor_to_index(self.start)
         current_index = start_index
         edge_mat = self.edge_matrix()
@@ -175,11 +176,12 @@ class PathFind:
         frontier.insert(path_cost_array[current_index] + heuristic[current_index], current_index)
         counter = 0 
         while True:        
-            print(counter)
-            print("frontier")
-            frontier.print_pq()
-            print("visited")
-            visited.print_pq()
+            if debugmode:
+                print(counter)
+                print("frontier")
+                frontier.print_pq()
+                print("visited")
+                visited.print_pq()
             if (not frontier):
                 print("failure")
                 return        
@@ -187,14 +189,14 @@ class PathFind:
             if (current_node.return_node_name() == end_index): #hit state, found your final state, break loop
                 break 
             if (not visited.is_present(current_node)): #add node state to explored if not there already
-                visited.insert(current_node.return_path_cost(), current_node.return_node_name())
+                visited.insert(current_node.return_node_priority(), current_node.return_node_name())
             path_cost_array, potential_child_nodes = self.create_child_nodes_with_heuristic(current_node, edge_mat, end_index, heuristic, path_cost_array)
             for child_node in potential_child_nodes:
                 if (not (visited.is_present(child_node)) and not (frontier.is_present(child_node))):
-                    frontier.insert(child_node.return_path_cost(), child_node.return_node_name())
+                    frontier.insert(child_node.return_node_priority(), child_node.return_node_name())
                     previous[child_node.return_node_name()] = current_node.return_node_name()
                 elif (frontier.is_present(child_node)):
-                    if (child_node.return_path_cost() < frontier.find_node(child_node).return_path_cost()):
+                    if (child_node.return_node_priority() < frontier.find_node(child_node).return_node_priority()):
                         frontier.replace_node(child_node)#remove the old path and put in the new child_node into frontier with a more optimal path cost
                         previous[child_node.return_node_name()] = current_node.return_node_name()
             counter = counter + 1
@@ -209,7 +211,7 @@ class PathFind:
 
     #create child nodes assuming that 
     def create_child_nodes(self, current_node, edge_mat): 
-        curr_path_cost = current_node.return_path_cost()
+        curr_path_cost = current_node.return_node_priority()
         node_name = current_node.return_node_name()
         node_coor = self.index_to_coor(node_name)
         child_nodes = []
@@ -358,24 +360,24 @@ def baby_uniform_test():
     
 def time_comparison():
     starttime = time.time()
+    simple_dijkstras_test()
+    print(time.time()-starttime)
+    
+    starttime = time.time()
     simple_uniform_cost_search_test()
     print(time.time()-starttime) 
  
-    starttime = time.time()
-    simple_dijkstras_test()
-    print(time.time()-starttime)
-
     starttime = time.time()
     simple_a_star_cost_search_test()
     print(time.time()-starttime)
 
     starttime = time.time()
-    larger_uniform_cost_search_test()
-    print(time.time()-starttime) 
-    
-    starttime = time.time()
     larger_dijkstras_test()
     print(time.time()-starttime)
+
+    starttime = time.time()
+    larger_uniform_cost_search_test()
+    print(time.time()-starttime)   
     
     starttime = time.time()
     larger_a_star_test()
@@ -389,8 +391,8 @@ if __name__=="__main__":
     #larger_dijkstras_test()
     #larger_uniform_cost_search_test()
     #baby_a_star_test()
-    #time_comparison()
-    comparison_a_star_uniform()
+    time_comparison()
+    #comparison_a_star_uniform()
 #    grid = np.zeros([26,30])
 #    grid[10:20, 10:20]=DIRT
 #    grid[24:25,0:3] = DIRT

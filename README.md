@@ -65,3 +65,49 @@ Modified the dijkstras algorithm to figure out the x, y ordering of coordinates 
 Run ant_select_move_dijkstras.py to see the ant move around the dirt mound.
 
 
+5/3/2020 commit
+fixed A* algorithm, added debugging flag. Note that we have a variable hack added into the string overload function inside PathNode, that converts an index to coordinates in graphelem.py. You'll see when you look.
+
+Timing tests:
+(antenv) C:\Users\jonyl\Documents\AntSimulator\ant-world>python dijkstrasalg.py
+Running simple uniform cost search
+[array([9, 4]), array([9, 3]), array([8, 3]), array([8, 2]), array([7, 2]), array([7, 1]), array([6, 1]), array([6, 0]), array([5, 0]), array([4, 0]), array([3, 0]), array([2, 0]), array([1, 0]), array([0, 0])]
+0.020175457000732422
+Running simple dijkstras test
+[array([9, 4]), array([8, 4]), array([7, 4]), array([6, 4]), array([5, 4]), array([4, 4]), array([3, 4]), array([2, 4]), array([1, 4]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+0.030042171478271484
+Running simple a star
+[array([9, 4]), array([8, 4]), array([8, 3]), array([7, 3]), array([7, 2]), array([6, 2]), array([6, 1]), array([5, 1]), array([5, 0]), array([4, 0]), array([3, 0]), array([2, 0]), array([1, 0]), array([0, 0])]
+0.023241043090820312
+Running large uniform cost
+[array([18, 25]), array([17, 25]), array([17, 24]), array([16, 24]), array([16, 23]), array([15, 23]), array([15, 22]), array([14, 22]), array([14, 21]), array([13, 21]), array([13, 20]), array([12, 20]), array([11, 20]), array([10, 20]), array([ 9, 20]), array([ 8, 20]), array([ 8, 19]), array([ 7, 19]), array([ 7, 18]), array([ 6, 18]), array([ 6, 17]), array([ 5, 17]), array([ 5, 16]), array([ 4, 16]), array([ 4, 15]), array([ 3, 15]), array([ 3, 14]), array([ 2, 14]), array([ 2, 13]), array([ 1, 13]), array([ 0, 13]), array([ 0, 12]), array([ 0, 11]), array([ 0, 10]), array([0, 9]), array([0, 8]), array([0, 7]), array([0, 6]), array([0, 5]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+10.171260118484497
+Running large dijkstras test
+[array([18, 25]), array([17, 25]), array([16, 25]), array([15, 25]), array([14, 25]), array([13, 25]), array([12, 25]), array([11, 25]), array([10, 25]), array([ 9, 25]), array([ 8, 25]), array([ 7, 25]), array([ 6, 25]), array([ 5, 25]), array([ 4, 25]), array([ 3, 25]), array([ 3, 24]), array([ 3, 23]), array([ 2, 23]), array([ 1, 23]), array([ 0, 23]), array([ 0, 22]), array([ 0, 21]), array([ 0, 20]), array([ 0, 19]), array([ 0, 18]), array([ 0, 17]), array([ 0, 16]), array([ 0, 15]), array([ 0, 14]), array([ 0, 13]), array([ 0, 12]), array([ 0, 11]), array([ 0, 10]), array([0, 9]), array([0, 8]), array([0, 7]), array([0, 6]), array([0, 5]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+13.845412015914917
+Running larger a star test
+[array([18, 25]), array([17, 25]), array([17, 24]), array([16, 24]), array([16, 23]), array([15, 23]), array([15, 22]), array([14, 22]), array([14, 21]), array([13, 21]), array([13, 20]), array([12, 20]), array([11, 20]), array([10, 20]), array([ 9, 20]), array([ 9, 19]), array([ 9, 18]), array([ 9, 17]), array([ 9, 16]), array([ 8, 16]), array([ 8, 15]), array([ 7, 15]), array([ 7, 14]), array([ 6, 14]), array([ 6, 13]), array([ 5, 13]), array([ 5, 12]), array([ 4, 12]), array([ 4, 11]), array([ 3, 11]), array([ 3, 10]), array([ 2, 10]), array([2, 9]), array([1, 9]), array([1, 8]), array([0, 8]), array([0, 7]), array([0, 6]), array([0, 5]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+10.449854373931885
+
+(antenv) C:\Users\jonyl\Documents\AntSimulator\ant-world>python dijkstrasalg.py
+Running simple dijkstras test
+[array([9, 4]), array([8, 4]), array([7, 4]), array([6, 4]), array([5, 4]), array([4, 4]), array([3, 4]), array([2, 4]), array([1, 4]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+0.020318984985351562
+Running simple uniform cost search
+[array([9, 4]), array([9, 3]), array([8, 3]), array([8, 2]), array([7, 2]), array([7, 1]), array([6, 1]), array([6, 0]), array([5, 0]), array([4, 0]), array([3, 0]), array([2, 0]), array([1, 0]), array([0, 0])]
+0.023639917373657227
+Running simple a star
+[array([9, 4]), array([8, 4]), array([8, 3]), array([7, 3]), array([7, 2]), array([6, 2]), array([6, 1]), array([5, 1]), array([5, 0]), array([4, 0]), array([3, 0]), array([2, 0]), array([1, 0]), array([0, 0])]
+0.027362585067749023
+Running large dijkstras test
+[array([18, 25]), array([17, 25]), array([16, 25]), array([15, 25]), array([14, 25]), array([13, 25]), array([12, 25]), array([11, 25]), array([10, 25]), array([ 9, 25]), array([ 8, 25]), array([ 7, 25]), array([ 6, 25]), array([ 5, 25]), array([ 4, 25]), array([ 3, 25]), array([ 3, 24]), array([ 3, 23]), array([ 2, 23]), array([ 1, 23]), array([ 0, 23]), array([ 0, 22]), array([ 0, 21]), array([ 0, 20]), array([ 0, 19]), array([ 0, 18]), array([ 0, 17]), array([ 0, 16]), array([ 0, 15]), array([ 0, 14]), array([ 0, 13]), array([ 0, 12]), array([ 0, 11]), array([ 0, 10]), array([0, 9]), array([0, 8]), array([0, 7]), array([0, 6]), array([0, 5]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+10.183300495147705
+Running large uniform cost
+[array([18, 25]), array([17, 25]), array([17, 24]), array([16, 24]), array([16, 23]), array([15, 23]), array([15, 22]), array([14, 22]), array([14, 21]), array([13, 21]), array([13, 20]), array([12, 20]), array([11, 20]), array([10, 20]), array([ 9, 20]), array([ 8, 20]), array([ 8, 19]), array([ 7, 19]), array([ 7, 18]), array([ 6, 18]), array([ 6, 17]), array([ 5, 17]), array([ 5, 16]), array([ 4, 16]), array([ 4, 15]), array([ 3, 15]), array([ 3, 14]), array([ 2, 14]), array([ 2, 13]), array([ 1, 13]), array([ 0, 13]), array([ 0, 12]), array([ 0, 11]), array([ 0, 10]), array([0, 9]), array([0, 8]), array([0, 7]), array([0, 6]), array([0, 5]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+13.248298406600952
+Running larger a star test
+[array([18, 25]), array([17, 25]), array([17, 24]), array([16, 24]), array([16, 23]), array([15, 23]), array([15, 22]), array([14, 22]), array([14, 21]), array([13, 21]), array([13, 20]), array([12, 20]), array([11, 20]), array([10, 20]), array([ 9, 20]), array([ 9, 19]), array([ 9, 18]), array([ 9, 17]), array([ 9, 16]), array([ 8, 16]), array([ 8, 15]), array([ 7, 15]), array([ 7, 14]), array([ 6, 14]), array([ 6, 13]), array([ 5, 13]), array([ 5, 12]), array([ 4, 12]), array([ 4, 11]), array([ 3, 11]), array([ 3, 10]), array([ 2, 10]), array([2, 9]), array([1, 9]), array([1, 8]), array([0, 8]), array([0, 7]), array([0, 6]), array([0, 5]), array([0, 4]), array([0, 3]), array([0, 2]), array([0, 1]), array([0, 0])]
+11.689187288284302 
+
+I don't know why A* is so slow. It clearly goes through less iterations.
+

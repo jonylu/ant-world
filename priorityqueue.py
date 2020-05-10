@@ -38,7 +38,7 @@ class PriorityQueueList():
         for index in range(self.size):
             if (self.list[index].return_node_name() == new_node.return_node_name()):
                 del self.list[index] #remove the old element
-                self.insert(new_node.return_path_cost(), new_node.return_node_name()) #add in the new element
+                self.insert(new_node.return_node_priority(), new_node.return_node_name()) #add in the new element
                 return
         print("ERROR: node not here")
         return
